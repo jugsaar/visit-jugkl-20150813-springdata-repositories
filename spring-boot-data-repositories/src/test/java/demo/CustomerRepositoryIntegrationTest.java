@@ -97,4 +97,26 @@ public class CustomerRepositoryIntegrationTest {
 		assertThat(result.getFirstname()).isEqualTo("Ralf");
 		assertThat(result.getLastname()).isEqualTo("Steinbach");
 	}
+
+	/**
+	 * @since Step 3.1
+	 */
+	@Test
+	public void findsAllCustomers() {
+
+		Iterable<Customer> customers = repository.findAll();
+
+		assertThat(customers).asList().hasSize(3);
+	}
+
+	/**
+	 * @since Step 3.2
+	 */
+	@Test
+	public void deletesCustomer() {
+
+		repository.delete(1L);
+		
+		assertThat(repository.findOne(1L)).isNull();
+	}
 }

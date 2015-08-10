@@ -15,33 +15,17 @@
  */
 package demo;
 
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.Repository;
 
 /**
  * {@link Repository} to access {@link Customer} instances.
  * 
  * @author Oliver Gierke
+ * @author Thomas Darimont
  * @since Step 2
  */
-public interface CustomerRepository extends Repository<Customer, Long> {
-
-	/**
-	 * Returns the {@link Customer} with the given identifier.
-	 * 
-	 * @param id the id to search for.
-	 * @since Step 2
-	 * @return
-	 */
-	Customer findOne(Long id);
-
-	/**
-	 * Saves the given {@link Customer}.
-	 * 
-	 * @param customer the {@link Customer} to search for.
-	 * @since Step 2
-	 * @return
-	 */
-	Customer save(Customer customer);
+interface CustomerRepository extends CrudRepository<Customer, Long> {
 
 	/**
 	 * Returns the customer with the given {@link EmailAddress}.
