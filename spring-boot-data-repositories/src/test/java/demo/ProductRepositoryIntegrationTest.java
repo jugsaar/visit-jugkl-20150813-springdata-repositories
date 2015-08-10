@@ -18,9 +18,13 @@ package demo;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.StrictAssertions.assertThat;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityManager;
+
+import org.assertj.core.data.Percentage;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +47,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProductRepositoryIntegrationTest {
 
 	@Autowired ProductRepository repository;
+	@Autowired EntityManager em;
 
 	/**
 	 * @since Step 6.1
@@ -90,5 +95,22 @@ public class ProductRepositoryIntegrationTest {
 		List<Product> products = repository.findByAttributeAndValue("connector", "plug");
 
 		assertThat(products).filteredOn("name", "Dock").isNotEmpty();
+	}
+
+	/**
+	 * @since Step 9
+	 */
+	@Test
+	public void executesCustomlyImplementedMethod() {
+
+		Product macbook = repository.findOne(2L).get();
+		
+		em.detach(macbook); // remove item from JPA cache
+
+		repository.raisePricesForWinterSaleBy(1.2);
+
+		Product result = repository.findOne(2L).get();
+
+		assertThat(result.getPrice()).isCloseTo(macbook.getPrice().multiply(new BigDecimal("1.2")),Percentage.withPercentage(1));
 	}
 }

@@ -35,15 +35,15 @@ import org.springframework.util.Assert;
 @Entity
 public class Product extends AbstractEntity {
 
-	@Column(nullable = false)
+	@Column(nullable = false) //
 	private String name;
-	
+
 	private String description;
 
-	@Column(nullable = false)
+	@Column(nullable = false) //
 	private BigDecimal price;
 
-	@ElementCollection
+	@ElementCollection //
 	private Map<String, String> attributes = new HashMap<String, String>();
 
 	/**
@@ -73,10 +73,9 @@ public class Product extends AbstractEntity {
 		this.description = description;
 	}
 
-	
 	@SuppressWarnings("unused")
 	private Product() {
-		//just for JPA
+		// just for JPA
 	}
 
 	/**
