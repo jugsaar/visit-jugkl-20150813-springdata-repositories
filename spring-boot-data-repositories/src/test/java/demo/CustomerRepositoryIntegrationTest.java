@@ -21,6 +21,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -116,7 +120,32 @@ public class CustomerRepositoryIntegrationTest {
 	public void deletesCustomer() {
 
 		repository.delete(1L);
-		
+
 		assertThat(repository.findOne(1L)).isNull();
+	}
+
+	/**
+	 * @since Step 4.1
+	 */
+	@Test
+	public void accessesCustomersPageByPage() {
+
+		Page<Customer> result = repository.findAll(new PageRequest(/* page:*/ 1, /* page size:*/ 1));
+
+		assertThat(result).isNotNull();
+		assertThat(result.isFirst()).isFalse();
+		assertThat(result.isLast()).isFalse();
+		assertThat(result.getNumberOfElements()).isEqualTo(1);
+	}
+
+	/**
+	 * @since Step 4.2
+	 */
+	@Test
+	public void browseThrouhgCustomersSortedByLastnameDesc() {
+
+		Iterable<Customer> result = repository.findAll(new Sort(Direction.DESC, "lastname"));
+
+		assertThat(result).asList().extracting("lastname").containsExactly("Steinbach", "Friedrich", "Daub");
 	}
 }

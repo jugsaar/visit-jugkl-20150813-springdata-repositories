@@ -15,7 +15,7 @@
  */
 package demo;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.Repository;
 
 /**
@@ -25,7 +25,7 @@ import org.springframework.data.repository.Repository;
  * @author Thomas Darimont
  * @since Step 2
  */
-interface CustomerRepository extends CrudRepository<Customer, Long> {
+interface CustomerRepository extends PagingAndSortingRepository<Customer, Long> {
 
 	/**
 	 * Returns the customer with the given {@link EmailAddress}.
