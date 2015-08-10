@@ -17,6 +17,8 @@ package demo;
 
 import static org.assertj.core.api.StrictAssertions.*;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,7 +110,7 @@ public class CustomerRepositoryIntegrationTest {
 	@Test
 	public void findsAllCustomers() {
 
-		Iterable<Customer> customers = repository.findAll();
+		List<Customer> customers = repository.findAll();
 
 		assertThat(customers).asList().hasSize(3);
 	}
