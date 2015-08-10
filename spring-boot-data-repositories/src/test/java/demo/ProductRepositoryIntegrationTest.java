@@ -80,4 +80,15 @@ public class ProductRepositoryIntegrationTest {
 
 		assertThat(result).isEmpty();
 	}
+
+	/**
+	 * @since Step 7.1
+	 */
+	@Test
+	public void executesManuallyDeclaredQuery() {
+
+		List<Product> products = repository.findByAttributeAndValue("connector", "plug");
+
+		assertThat(products).filteredOn("name", "Dock").isNotEmpty();
+	}
 }
