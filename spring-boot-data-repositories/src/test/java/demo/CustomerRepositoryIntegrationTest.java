@@ -30,6 +30,8 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.mysema.query.types.expr.BooleanExpression;
+
 /**
  * Integration tests for {@link CustomerRepository}.
  * 
@@ -149,5 +151,25 @@ public class CustomerRepositoryIntegrationTest {
 		Iterable<Customer> result = repository.findAll(new Sort(Direction.DESC, "lastname"));
 
 		assertThat(result).asList().extracting("lastname").containsExactly("Steinbach", "Friedrich", "Daub");
+	}
+	
+	/**
+	 * @since Step 8
+	 */
+	@Test
+	public void executesQuerydslPredicate() {
+
+		Customer dietmar = repository.findByEmailAddress("dietmar@example.org");
+		Customer ralf = repository.findByEmailAddress("ralf@example.org");
+
+		QCustomer customer = QCustomer.customer;
+
+		BooleanExpression firstnameStartsWithDie = customer.firstname.startsWith("Die");
+		BooleanExpression lastnameContainsBach = customer.lastname.contains("bach");
+
+		Iterable<Customer> result = repository.findAll(firstnameStartsWithDie.or(lastnameContainsBach));
+
+		assertThat(result).asList().hasSize(2);
+		assertThat(result).asList().containsExactly(dietmar, ralf);
 	}
 }
